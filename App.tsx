@@ -1,45 +1,40 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect } from 'react';
+import { Provider as ReduxProvider } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider as PaperProvider } from 'react-native-paper';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { store } from './src/app/store';
+import RootNavigator from './src/navigation/RootNavigator';
+import { theme } from './src/core/ui/theme';
+import { initDb } from './src/core/db/schema';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import RNBootSplash from "react-native-bootsplash";
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
-  );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
+export default function App() {
+  useEffect(() => {
+    // Initialize schema/migrations at startup
+    initDb().catch((e) => {
+      // eslint-disable-next-line no-console
+      console.error('DB init failed:', e);
+    });
+    RNBootSplash.hide({ fade: true });
+  }, []);
 
   return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ReduxProvider store={store}>
+        <PaperProvider
+        theme={theme}
+        settings={{
+          icon: (props) => <MaterialCommunityIcons {...props} />,
+        }}
+      >
+          <NavigationContainer>
+            <RootNavigator />
+          </NavigationContainer>
+        </PaperProvider>
+      </ReduxProvider>
+    </GestureHandlerRootView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
-export default App;

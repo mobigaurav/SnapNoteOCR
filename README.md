@@ -1,97 +1,61 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+SnapNoteOCR is a React Native app that scans documents, performs on‑device OCR, and lets you save or export notes as PDF/TXT.
 
-# Getting Started
+## Requirements
+- Node 20+
+- Xcode (for iOS) with CocoaPods
+- Android Studio + SDK/NDK, Java 17
+- Watchman (recommended on macOS)
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
-
-## Step 1: Start Metro
-
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
-
-To start the Metro dev server, run the following command from the root of your React Native project:
-
+## Setup
+Install JS deps:
 ```sh
-# Using npm
-npm start
-
-# OR using Yarn
-yarn start
+npm install
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
+iOS native deps (first time or after native package changes):
 ```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
+cd ios
+bundle install          # installs CocoaPods via Gemfile
 bundle exec pod install
+cd ..
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
+## Run the app
+Start Metro:
 ```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
+npm start
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+Android (emulator or device):
+```sh
+npm run android
+```
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+iOS (simulator):
+```sh
+npm run ios
+```
 
-## Step 3: Modify your app
+## OCR + export notes
+- Scan: open Scan, frame the document, tap Capture, then review/edit text.
+- Export: from a note, choose export/share; PDF/TXT are written to the app Documents directory and shared via the system sheet.
+- If Android sharing ever fails after installing on a new device, rebuild the app (`./gradlew clean assembleDebug`) so FileProvider picks up the bundled icons/paths.
 
-Now that you have successfully run the app, let's make changes!
+## Tests and lint
+```sh
+npm test
+npm run lint
+```
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+## GitHub: push this project
+If this folder is not yet connected to a remote:
+```sh
+git remote -v                # see current remotes
+git remote remove origin     # only if you need to replace an existing remote
+git remote add origin git@github.com:<your-username>/<repo>.git
+git branch -M main
+git add .
+git commit -m "Initial commit"
+git push -u origin main
+```
+If Git is not initialized yet, run `git init` before the above.
