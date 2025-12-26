@@ -17,7 +17,7 @@ import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../../../navigation/RootNavigator';
 import { spacing } from '../../../core/ui/spacing';
 
-import { exportNoteAsPdf, exportNoteAsTxt } from '../../../core/export/exportService';
+import {  exportNoteAsTxt } from '../../../core/export/exportService';
 import { useAppSelector } from '../../../app/hooks';
 import { selectNotes } from '../../notes/notesSlice';
 
@@ -32,8 +32,9 @@ type Nav = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
 const APP_STORE_ID = ''; // e.g. '1234567890'
 const ANDROID_PACKAGE = ''; // e.g. 'com.gaurav.snapnote'
 
-const PRIVACY_URL = 'https://example.com/privacy'; // replace later
-const SUPPORT_EMAIL = 'support@example.com'; // replace later
+const PRIVACY_URL = 'https://mobigaurav.github.io/SnapNoteOCR/privacy.html'; // replace later
+const SUPPORT_EMAIL = 'mobigaurav@gmail.com'; // replace later
+const TERMS_URL = 'https://mobigaurav.github.io/SnapNoteOCR/terms.html'
 
 function getStoreUrls() {
   const iosReview = APP_STORE_ID
@@ -135,6 +136,16 @@ const exportAllTxt = async () => {
     }
   };
 
+    const onTerms = async () => {
+    try {
+      const can = await Linking.canOpenURL(TERMS_URL);
+      if (!can) return toast('Terms URL not set yet.');
+      await Linking.openURL(TERMS_URL);
+    } catch {
+      toast('Could not open link.');
+    }
+  };
+
   const onContact = async () => {
     try {
       await Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=SnapNote Support`);
@@ -218,6 +229,12 @@ const exportAllTxt = async () => {
           description="How we handle your data"
           left={(p) => <List.Icon {...p} icon="file-document-outline" />}
           onPress={onPrivacy}
+        />
+         <List.Item
+          title="Terms"
+          description="Terms & Conditions"
+          left={(p) => <List.Icon {...p} icon="file-document-outline" />}
+          onPress={onTerms}
         />
         <List.Item
           title="Contact support"

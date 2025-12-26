@@ -47,15 +47,3 @@ npm test
 npm run lint
 ```
 
-## GitHub: push this project
-If this folder is not yet connected to a remote:
-```sh
-git remote -v                # see current remotes
-git remote remove origin     # only if you need to replace an existing remote
-git remote add origin git@github.com:<your-username>/<repo>.git
-git branch -M main
-git add .
-git commit -m "Initial commit"
-git push -u origin main
-```
-If Git is not initialized yet, run `git init` before the above.
